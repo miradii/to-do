@@ -1,0 +1,23 @@
+{
+  "name": "to-do",
+  "version": "1.0.0",
+  "description": "basic todo app for odin project ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start": "webpack serve --open"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.22.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "immutable": "^4.0.0-rc.12",
+    "ramda": "^0.27.1"
+  }
+}
