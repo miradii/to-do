@@ -1,11 +1,16 @@
-import { project } from "ramda"
+import Project from "./project"
 import {
   closeTaskEditors,
   renderTab,
   clearContent,
   rotateArrow,
 } from "./DomController"
-import { addTaskToProject, allProjects } from "./ProjectRepo"
+import {
+  updateProject,
+  setAllProjectsMap,
+  getAllProjectsMap,
+} from "./ProjectRepo"
+import { makeTask } from "./Task"
 //open task editor on clicking the arrow
 function taskOpen(e) {
   let task = e.target.parentElement
@@ -27,7 +32,14 @@ function taskOpen(e) {
 function makeNewTask(event, taskTitle, projectTitle) {
   if (event.keyCode == 13) {
     if (taskTitle() != "") {
-      addTaskToProject(allProjects, taskTitle(), projectTitle())
+      setAllProjectsMap(
+        updateProject(
+          getAllProjectsMap(),
+          projectTitle(),
+          Project.addTask(makeTask(taskTitle()))
+        )
+      )
+      console.log(getAllProjectsMap())
       clearContent()
       renderTab("Today")
     } // this should change to get this as a parameter or something

@@ -1,34 +1,31 @@
-import r from "ramda"
+import { update } from "immutable"
+import { curry } from "ramda"
 
 const Priority = { LOW: 1, NORMAL: 2, HIGH: 3 }
 Object.freeze(Priority)
-class Task {
-  constructor(name, date = new Date().toLocaleDateString("en-US")) {
-    this.title = name
-    this.dueDate = date
-    this.priority = Priority.NORMAL
-    this.description = ""
-    this.note = " "
-    this.done = false
-  }
-  setDescription(description) {
-    this.description = description
-  }
-  setDueDate(date) {
-    dueDate = date
-  }
-  setPriority(priority) {
-    this.priority = priority
-  }
-  setNote(note) {
-    this.note = note
-  }
-  toggleDone() {
-    this.done = !this.done
-  }
-  setTitle(title) {
-    this.title = title
+function makeTask(name, date = new Date().toLocaleDateString("en-US")) {
+  return {
+    title: name,
+    dueDate: date,
+    priority: Priority.NORMAL,
+    note: " ",
+    done: false,
   }
 }
+// gets a property and a function and sets the property to the return value
+const updateTask = curry((property, task, fn) => ({
+  ...task,
+  [property]: fn(),
+}))
 
-export { Task, Priority }
+const updateTaskName = updateTask("title")
+const updateTaskDate = updateTask("dueDate")
+const updateTaskNote = updateTask("note")
+export {
+  makeTask,
+  Priority,
+  updateTask,
+  updateTaskName,
+  updateTaskDate,
+  updateTaskNote,
+}

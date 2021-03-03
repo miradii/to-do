@@ -1,6 +1,6 @@
 import { makeMultipleTaskElements } from "./TaskView"
 import { makeTaskInput } from "./taskInputView"
-import { project } from "ramda"
+import Project from "./project"
 function makeTodayTab(allProjects) {
   const taskContainer = document.createElement("div")
   taskContainer.className = "task-container"
@@ -9,7 +9,7 @@ function makeTodayTab(allProjects) {
   for (let project of allProjects) {
     allTasks = allTasks.concat(
       makeMultipleTaskElements(
-        project.getTasksOnDate(new Date().toLocaleDateString("en-US")),
+        Project.getTasksOnDate(project, new Date().toLocaleDateString("en-US")),
         project.title
       )
     )

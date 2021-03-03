@@ -1,10 +1,10 @@
 // I need a function that gets all the projects and returns the divs related to it
-
+import Project from "./project"
 // Project[] -> DomElement
 function getProjectsTab(projectArray) {
   const containerDiv = document.createElement("div")
   containerDiv.className = "projects-container"
-
+  console.log(projectArray)
   const allProjectTiles = projectArray.map(createProjectTile)
   allProjectTiles.forEach((tile) => containerDiv.appendChild(tile))
   return containerDiv
@@ -16,7 +16,8 @@ function createProjectTile(project) {
   tileDiv.setAttribute("class", "project-tile")
   const squareDiv = document.createElement("div")
   squareDiv.className = "project-square"
-  const nameList = createList(project.getTaskNames())
+  const nameList = createList(Project.getTaskNames(project))
+  console.log(Project.getTaskNames(project))
   const titleH3 = document.createElement("h3")
   titleH3.className = "project-name"
   titleH3.innerText = project.title
