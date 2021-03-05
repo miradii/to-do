@@ -1,8 +1,19 @@
 import { hash } from "immutable"
-import { taskOpen } from "./EventCallbacks"
+import {
+  taskOpen,
+  changeTaskNote,
+  changeTaskDate,
+  scheduleForTommorow,
+  scheduleForToday,
+} from "./EventCallbacks"
 function makeTaskElement(task, taskProject) {
   const taskElement = document.createElement("div")
   taskElement.className = "task"
+  let [day, month, year] = task.dueDate.split("/")
+  if (month.length < 2) month = "0" + month
+  if (day.length < 2) day = "0" + day
+
+  console.log(year)
   taskElement.innerHTML = ` 
           <div class="task-info" id="taskInfo">
             <input type="checkbox" name="done" data-key="${hash(task.title)}" />
@@ -19,9 +30,9 @@ function makeTaskElement(task, taskProject) {
                 <label for="notes"> Notes<br /> </label>
 
                 <textarea
-                  data-key ="${hash(task.title)}"
                   name="notes"
                   class="task-note"
+                  id="notes"
                   cols="30"
                   rows="8"
                 >${task.note}</textarea>
@@ -35,11 +46,16 @@ function makeTaskElement(task, taskProject) {
                     Tommorow
                   </button>
                 </div>
-                <input type="date" value="" />
+                <input id="dateInput" type="date" value="${year}-${month}-${day}" />
                 <button class="delete-button" data-key="">Delete</button>
               </div>
             </div>
           </div>`
+
+  /**
+   * ADDING THE EVENT LISTENERS HERE
+   */
+
   taskElement.querySelector("#openTask").addEventListener("click", taskOpen)
   // change size of the input box for task name dynamically
   const allTaskNames = taskElement.querySelectorAll(".task-title")
@@ -50,6 +66,27 @@ function makeTaskElement(task, taskProject) {
     )
   })
 
+  taskElement
+    .querySelector("#notes")
+    .addEventListener("blur", (e) =>
+      changeTaskNote(e, task.title, taskProject, e.target.value)
+    )
+
+  taskElement
+    .querySelector("#dateInput")
+    .addEventListener("change", (e) =>
+      changeTaskDate(e, task.title, taskProject)
+    )
+
+  taskElement
+    .querySelector("#todayButton")
+    .addEventListener("click", () => scheduleForToday(task.title, taskProject))
+
+  taskElement
+    .querySelector("#tommorowButton")
+    .addEventListener("click", () =>
+      scheduleForTommorow(task.title, taskProject)
+    )
   return taskElement
 }
 function makeMultipleTaskElements(tasks, projectName) {

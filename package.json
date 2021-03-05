@@ -17,6 +17,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "date-fns": "^2.19.0",
     "immutable": "^4.0.0-rc.12",
     "ramda": "^0.27.1"
   }

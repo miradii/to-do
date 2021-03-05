@@ -1,6 +1,7 @@
 import { makeMultipleTaskElements } from "./TaskView"
 import { makeTaskInput } from "./taskInputView"
 import Project from "./project"
+
 function makeTodayTab(allProjects) {
   const taskContainer = document.createElement("div")
   taskContainer.className = "task-container"

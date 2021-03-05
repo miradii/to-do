@@ -13,7 +13,7 @@ function makeTask(name, date = new Date().toLocaleDateString("en-US")) {
   }
 }
 // gets a property and a function and sets the property to the return value
-const updateTask = curry((property, task, fn) => ({
+const updateTask = curry((property, fn, task) => ({
   ...task,
   [property]: fn(),
 }))

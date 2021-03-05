@@ -39,7 +39,10 @@ function getAllTasks() {
   allProjects
     .toIndexedSeq()
     .toArray()
-    .reduce((acc, project) => (acc = acc.concat(project.getAllTasks())), [])
+    .reduce(
+      (acc, project) => (acc = acc.concat(Project.getAllTasks(project))),
+      []
+    )
 }
 
 // Return all tasks in a certain date

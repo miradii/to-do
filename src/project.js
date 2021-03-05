@@ -13,9 +13,10 @@ const addTask = curry(function (task, project) {
 })
 
 // this uses one of the updateTask functions to modify a task
-const updateTaskInProject = curry((taskUpdater, taskName, project) =>
-  project.projectTasks.update(hash(taskName), taskUpdater)
-)
+const updateTaskInProject = curry((taskUpdater, taskName, project) => ({
+  ...project,
+  projectTasks: project.projectTasks.update(hash(taskName), taskUpdater),
+}))
 
 // search tasks of a project based on their title
 // retrieve a Task using it's key
@@ -32,7 +33,7 @@ const getTasksOnDate = curry(function (project, date) {
   return project.projectTasks
     .toIndexedSeq()
     .toArray()
-    .filter((task) => task.dueDate == date)
+    .filter((task) => task.dueDate === date)
 })
 // return all tasks of a project that have the same priority
 const getTasksWithPriority = curry(function (project, priority) {
@@ -76,6 +77,7 @@ export default {
   getTasksOnDate,
   getCompletedTasks,
   getUnfinishedTasks,
+  updateTaskInProject,
   clearDone,
   getTaskNames,
 }
