@@ -1,11 +1,11 @@
-import { Map, hash, update } from "immutable"
-import { updateTask } from "./Task"
+import { Map, hash } from "immutable"
 import { curry } from "ramda"
 function makeProject(name) {
   return { title: name, projectTasks: Map() }
 }
 
 const addTask = curry(function (task, project) {
+	task.projectTitle = project.title;
   return {
     ...project,
     projectTasks: project.projectTasks.set(hash(task.title), task),
@@ -14,8 +14,13 @@ const addTask = curry(function (task, project) {
 
 // this uses one of the updateTask functions to modify a task
 const updateTaskInProject = curry((taskUpdater, taskName, project) => ({
+  ...project,  projectTasks: project.projectTasks.update(hash(taskName), taskUpdater),
+}))
+
+
+const deleteTaskFromProject = curry((taskName, project) => ({
   ...project,
-  projectTasks: project.projectTasks.update(hash(taskName), taskUpdater),
+  projectTasks: project.projectTasks.delete(hash(taskName)),
 }))
 
 // search tasks of a project based on their title
@@ -33,7 +38,11 @@ const getTasksOnDate = curry(function (project, date) {
   return project.projectTasks
     .toIndexedSeq()
     .toArray()
-    .filter((task) => task.dueDate === date)
+    .filter(
+      (task) =>
+        task.dueDate.toLocaleDateString("en-Us") ===
+        date.toLocaleDateString("en-US")
+    )
 })
 // return all tasks of a project that have the same priority
 const getTasksWithPriority = curry(function (project, priority) {
@@ -66,7 +75,7 @@ function getTaskNames(project) {
   return project.projectTasks
     .toIndexedSeq()
     .toArray()
-    .map((task) => task.title)
+    .map((task) => task.title) || [" "];
 }
 
 export default {
@@ -80,4 +89,5 @@ export default {
   updateTaskInProject,
   clearDone,
   getTaskNames,
+	deleteTaskFromProject
 }
